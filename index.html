@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Neo4j Question Answering</title>
+    <script src="https://unpkg.com/neo4j-driver/lib/browser/neo4j-web.min.js"></script>
+    <style>
+        :root {
+            --neo4j-blue: #008cc1;
+            --neo4j-dark: #003b49;
+            --neo4j-light: #f5f9fc;
+            --neo4j-accent: #00b2a9;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--neo4j-light);
+            margin: 0;
+            padding: 2rem;
+            color: #222;
+        }
+
+        h2, h3 {
+            color: var(--neo4j-dark);
+        }
+
+        button {
+            background-color: var(--neo4j-blue);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: var(--neo4j-accent);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0 12px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        #loginModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #loginForm {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 320px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .close:hover {
+            color: #000;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button onclick="openLoginModal()">Authenticate</button>
+
+        <div id="loginModal">
+            <div id="loginForm">
+                <span class="close" onclick="closeLoginModal()">&times;</span>
+                <h2>Login</h2>
+                <label for="neo4jServer">Neo4j Server URL:</label>
+                <input type="text" id="neo4jServer" placeholder="neo4j+s://<instance_number>.databases.neo4j.io">
+                
+                <label for="neo4jUser">Neo4j User:</label>
+                <input type="text" id="neo4jUser" placeholder="neo4j">
+                
+                <label for="neo4jPassword">Neo4j Password:</label>
+                <input type="password" id="neo4jPassword">
+                
+                <label for="openAiApiKey">OpenAI API Key:</label>
+                <input type="password" id="openAiApiKey">
+                
+                <button onclick="saveConfig()">Authenticate</button>
+            </div>
+        </div>
+
+        <h2>Ask a Question</h2>
+        <input type="text" id="question" placeholder="Enter your question here">
+        <button onclick="postQuestion()">Ask</button>
+
+        <h3>Answer</h3>
+        <textarea id="answer" rows="10" readonly></textarea>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
